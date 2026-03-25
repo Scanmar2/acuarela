@@ -4,6 +4,9 @@ on:
   push:
     branches: [claude/add-color-palette-Q9825]
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

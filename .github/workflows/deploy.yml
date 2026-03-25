@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [claude/add-color-palette-Q9825]
 
 jobs:
   deploy:

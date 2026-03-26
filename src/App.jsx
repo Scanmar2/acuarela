@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 
 const COLORS = [
   { id:"hym", name:"Hansa Yellow Med.", pigment:"PY97", hex:"#f5e24d", cat:"yellow" },

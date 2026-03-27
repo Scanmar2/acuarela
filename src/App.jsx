@@ -279,10 +279,21 @@ export default function App() {
         ::-webkit-scrollbar-track { background:transparent; }
         ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:3px; }
         input::placeholder { color:#5a554d; }
+        @media (max-width: 600px) {
+          .mobile-p-top { padding: 32px 16px 16px !important; }
+          .mobile-well { width: 42px !important; height: 42px !important; }
+          .mobile-well span { font-size: 0.38rem !important; }
+          .mobile-mix-grid { grid-template-columns: 1fr !important; }
+          .mobile-tabs { gap: 4px !important; padding: 0 10px 12px !important; }
+          .mobile-tabs button { padding: 6px 10px !important; font-size: 0.72rem !important; }
+          .mobile-wheel-container { gap: 16px !important; }
+          .mobile-p-20 { padding: 20px !important; }
+          .mobile-p-16 { padding: 16px !important; }
+        }
       `}</style>
 
       {/* Header */}
-      <div style={{ textAlign:"center", padding:"48px 20px 24px", position:"relative" }}>
+      <div className="mobile-p-top" style={{ textAlign:"center", padding:"48px 20px 24px", position:"relative" }}>
         <div style={{ position:"absolute", top:"-100px", left:"50%", transform:"translateX(-50%)", width:500, height:500, background:"radial-gradient(circle, rgba(212,132,90,0.1) 0%, transparent 70%)", pointerEvents:"none" }} />
         <div style={{ display:"inline-flex", padding:"5px 14px", border:"1px solid rgba(255,255,255,0.1)", borderRadius:100, fontSize:"0.65rem", fontWeight:700, letterSpacing:2, textTransform:"uppercase", color:"#d4845a", marginBottom:16, background:"rgba(212,132,90,0.06)" }}>
           ● Daniel Smith · 27 colores
@@ -293,7 +304,7 @@ export default function App() {
       </div>
 
       {/* Tab Bar */}
-      <div style={{ display:"flex", justifyContent:"center", gap:4, padding:"0 20px 16px", flexWrap:"wrap" }}>
+      <div className="mobile-tabs" style={{ display:"flex", justifyContent:"center", gap:4, padding:"0 20px 16px", flexWrap:"wrap" }}>
         {[["guide","📖 Guía"],["mixer","🎨 Mezclador"],["wheel","🔴 Rueda"],["palette","🗺️ Mi Paleta"]].map(([k,l]) => (
           <button key={k} onClick={()=>{ setTab(k); setSearch(""); setMixerSel([]); setWheelSel(null); }} style={{
             padding:"8px 18px", borderRadius:10, fontSize:"0.78rem", fontWeight:600, fontFamily:"inherit",
@@ -379,10 +390,10 @@ export default function App() {
             <p style={{ fontSize:"0.82rem", color:"#8a857d", marginBottom:20, fontWeight:300 }}>
               Tus 27 colores en la rueda cromática. Toca uno para ver complementarios, análogos y tríadas.
             </p>
-            <div style={{ display:"flex", gap:24, flexWrap:"wrap", justifyContent:"center", alignItems:"flex-start" }}>
+            <div className="mobile-wheel-container" style={{ display:"flex", gap:24, flexWrap:"wrap", justifyContent:"center", alignItems:"flex-start" }}>
               {/* SVG Wheel */}
-              <div style={{ flexShrink:0 }}>
-                <svg viewBox="0 0 320 320" width="320" height="320">
+              <div style={{ flexShrink:0, width:"100%", maxWidth:320, margin:"0 auto" }}>
+                <svg viewBox="0 0 320 320" style={{ width:"100%", height:"auto" }}>
                   {Array.from({length:120},(_,i)=>i*3).map(deg=>(
                     <line key={deg} x1={160+118*Math.cos((deg-90)*Math.PI/180)} y1={160+118*Math.sin((deg-90)*Math.PI/180)} x2={160+138*Math.cos((deg-90)*Math.PI/180)} y2={160+138*Math.sin((deg-90)*Math.PI/180)} stroke={`hsl(${deg},65%,45%)`} strokeWidth="3.5" opacity="0.2" />
                   ))}
@@ -498,7 +509,7 @@ export default function App() {
               Distribución visual de tu paleta. Toca un color para ver sus mezclas en el mezclador.
             </p>
             {/* Palette box */}
-            <div style={{ background:"#1a1a1f", border:"1px solid rgba(255,255,255,0.08)", borderRadius:20, padding:28, maxWidth:600, margin:"0 auto" }}>
+            <div className="mobile-p-20" style={{ background:"#1a1a1f", border:"1px solid rgba(255,255,255,0.08)", borderRadius:20, padding:28, maxWidth:600, margin:"0 auto" }}>
               {/* Mixing area */}
               <div style={{ background:"#22222a", borderRadius:12, height:64, marginBottom:24, display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid rgba(255,255,255,0.04)" }}>
                 <span style={{ fontSize:"0.72rem", color:"#5a554d", fontWeight:500, letterSpacing:1, textTransform:"uppercase" }}>Zona de mezclas</span>
@@ -516,6 +527,7 @@ export default function App() {
                         const c = getColorById(slot.id);
                         return (
                           <button key={slot.id} onClick={()=>{ setTab("mixer"); setMixerSel([slot.id]); }}
+                            className="mobile-well"
                             title={c.name}
                             style={{
                               width:56, height:56, borderRadius:10, background:c.hex, border:"2px solid rgba(255,255,255,0.06)",
@@ -563,7 +575,7 @@ export default function App() {
                 <span style={{ fontSize:"0.85rem", color:"#5a554d", transform: isCollapsed ? "rotate(-90deg)" : "rotate(0)", transition:"transform 0.2s" }}>▼</span>
               </button>
               {!isCollapsed && (
-                <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(300px, 1fr))", gap:10, padding:"16px 0" }}>
+                <div className="mobile-mix-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(300px, 1fr))", gap:10, padding:"16px 0" }}>
                   {mixes.map(mix => (
                     <MixCard key={mix.id} mix={mix} isFav={favs.includes(mix.id)} onToggleFav={()=>toggleFav(mix.id)} />
                   ))}
@@ -625,6 +637,7 @@ function MixCard({ mix, isFav, onToggleFav }) {
   return (
     <div
       onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}
+      className="mobile-p-16"
       style={{
         background: hovered ? "#1e1e25" : "#18181d",
         border: `1px solid ${hovered ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.06)"}`,

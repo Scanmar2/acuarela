@@ -1,16 +1,16 @@
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 
 const COLORS = [
-  { id:"hym", name:"Hansa Yellow Med.", pigment:"PY97", hex:"#f5e24d", cat:"yellow" },
+  { id:"hym", name:"Hansa Yellow Medium", pigment:"PY97", hex:"#f5e24d", cat:"yellow" },
   { id:"isy", name:"Isoindolinone Yellow", pigment:"PY110", hex:"#e8c82a", cat:"yellow" },
   { id:"ng", name:"New Gamboge", pigment:"PY150", hex:"#e8a517", cat:"yellow" },
   { id:"yo", name:"Yellow Ochre", pigment:"PY43", hex:"#c9982a", cat:"yellow" },
-  { id:"qg", name:"Quinacridone Gold", pigment:"PO48+PY150", hex:"#c4892a", cat:"yellow" },
+  { id:"qdg", name:"Quinacridone Deep Gold", pigment:"PO48", hex:"#9b4a22", cat:"yellow" },
   { id:"rs", name:"Raw Sienna", pigment:"PBr7", hex:"#c89848", cat:"yellow" },
   { id:"bt", name:"Buff Titanium", pigment:"PW6:1", hex:"#e8dcc0", cat:"yellow" },
   { id:"po", name:"Pyrrol Orange", pigment:"PO73", hex:"#e85c1a", cat:"red" },
   { id:"pr", name:"Pyrrol Red", pigment:"PR254", hex:"#d42a1e", cat:"red" },
-  { id:"op", name:"Opera Pink", pigment:"PR122+BV10", hex:"#ff3ca0", cat:"red" },
+  { id:"qr", name:"Quinacridone Rose", pigment:"PV19", hex:"#c52d54", cat:"red" },
   { id:"tro", name:"Transp. Red Oxide", pigment:"PR101", hex:"#a0421e", cat:"red" },
   { id:"bsl", name:"Burnt Sienna Light", pigment:"PBr7", hex:"#a06030", cat:"brown" },
   { id:"sep", name:"Sepia", pigment:"PBr7+PBk7", hex:"#3e2a18", cat:"brown" },
@@ -39,22 +39,22 @@ const MIXES = [
   { id:"m5", name:"Negro Verdoso", result:"#282830", colors:["pgbs","tro"], note:"Negro con matiz verde. Vegetación densa y bosque.", section:"negros", tags:"negro verde bosque" },
   { id:"m6", name:"Gris Azul Frío", result:"#404858", colors:["pbgs","bsl"], note:"Gris frío sin granulación. Metales y cielos tormentosos.", section:"negros", tags:"gris frío metal" },
   // Verdes
-  { id:"m7", name:"Sap Green", result:"#4a8830", colors:["pgbs","qg"], note:"Verde natural realista. El más versátil para vegetación.", section:"verdes", tags:"verde vegetación natural" },
+  { id:"m7", name:"Sap Green", result:"#4a8830", colors:["pgbs","qdg"], note:"Verde natural realista. El más versátil para vegetación.", section:"verdes", tags:"verde vegetación natural" },
   { id:"m8", name:"Verde Musgo", result:"#385828", colors:["pgbs","bsl"], note:"Verde apagado orgánico. Musgo, liquen, otoño.", section:"verdes", tags:"verde musgo otoño" },
   { id:"m9", name:"Verde Tropical", result:"#28a040", colors:["pgbs","ng"], note:"Verde vivo. Hojas jóvenes, plantas tropicales.", section:"verdes", tags:"verde tropical brillante" },
   { id:"m10", name:"Verde Limón", result:"#60a818", colors:["pgbs","hym"], note:"Verde ácido. Hojas a contraluz y brotes.", section:"verdes", tags:"verde limón ácido" },
-  { id:"m11", name:"Verde Oliva", result:"#586828", colors:["ub","qg"], note:"Verde cálido con granulación. Olivos, prados mediterráneos.", section:"verdes", tags:"verde oliva mediterráneo" },
+  { id:"m11", name:"Verde Oliva", result:"#586828", colors:["ub","qdg"], note:"Verde cálido con granulación. Olivos, prados mediterráneos.", section:"verdes", tags:"verde oliva mediterráneo" },
   { id:"m12", name:"Verde Brillante", result:"#38a850", colors:["pbgs","ng"], note:"Verde puro y saturado. Césped a pleno sol.", section:"verdes", tags:"verde brillante césped" },
-  { id:"m13", name:"Verde Suave", result:"#688848", colors:["cer","qg"], note:"Verde apagado granulante. Follaje lejano.", section:"verdes", tags:"verde suave follaje" },
+  { id:"m13", name:"Verde Suave", result:"#688848", colors:["cer","qdg"], note:"Verde apagado granulante. Follaje lejano.", section:"verdes", tags:"verde suave follaje" },
   { id:"m14", name:"Verde Bosque", result:"#485830", colors:["pgbs","yo"], note:"Verde apagado natural. Árboles maduros y setos.", section:"verdes", tags:"verde bosque árbol" },
   // Naranjas
   { id:"m15", name:"Naranja Dorado", result:"#e87820", colors:["po","ng"], note:"Naranja cálido luminoso. Atardeceres y otoño.", section:"naranjas", tags:"naranja dorado atardecer" },
   { id:"m16", name:"Naranja Fuego", result:"#d85020", colors:["pr","ng"], note:"Naranja rojizo intenso. Puestas de sol y fuego.", section:"naranjas", tags:"naranja fuego rojo" },
   { id:"m17", name:"Naranja Terroso", result:"#b86828", colors:["pr","yo"], note:"Naranja apagado. Arcilla y terracota.", section:"naranjas", tags:"naranja tierra arcilla" },
-  { id:"m18", name:"Sienna Transparente", result:"#c87030", colors:["qg","pr"], note:"Naranja terroso transparente. Piel y veladuras.", section:"naranjas", tags:"sienna naranja piel" },
+  { id:"m18", name:"Sienna Transparente", result:"#c87030", colors:["qdg","pr"], note:"Naranja terroso transparente. Piel y veladuras.", section:"naranjas", tags:"sienna naranja piel" },
   // Violetas
-  { id:"m19", name:"Púrpura Vivo", result:"#8838a8", colors:["op","ub"], note:"⚠️ No permanente. Solo bocetos, Opera Pink se desvanece.", section:"violetas", tags:"violeta púrpura vivo", warn:true },
-  { id:"m20", name:"Lavanda Intensa", result:"#7848a0", colors:["op","cb"], note:"⚠️ No permanente. Hermosa pero efímera.", section:"violetas", tags:"lavanda violeta", warn:true },
+  { id:"m19", name:"Púrpura Vivo", result:"#8838a8", colors:["qr","ub"], note:"Mezcla vibrante para flores y sombras intensas.", section:"violetas", tags:"violeta púrpura vivo" },
+  { id:"m20", name:"Lavanda Intensa", result:"#7848a0", colors:["qr","cb"], note:"Violeta luminoso y granulante.", section:"violetas", tags:"lavanda violeta" },
   { id:"m21", name:"Violeta Terroso", result:"#584060", colors:["ub","tro"], note:"Violeta apagado permanente. Sombras cálidas.", section:"violetas", tags:"violeta tierra sombra" },
   { id:"m22", name:"Berenjena", result:"#483858", colors:["pgbs","pr"], note:"Más rojo que verde: ciruela y berenjena. Permanente.", section:"violetas", tags:"berenjena ciruela oscuro" },
   // Tierras
@@ -71,7 +71,7 @@ const MIXES = [
   { id:"m32", name:"Cielo Nocturno", result:"#1a2040", colors:["ind","ub"], note:"Azul noche profundo. Toque de Pyrrol Red para calidez.", section:"cielos", tags:"cielo noche nocturno" },
   { id:"m33", name:"Cielo Tropical", result:"#68c8c8", colors:["ct"], note:"Solo, diluido. Aguas caribeñas.", section:"cielos", tags:"cielo tropical turquesa" },
   // Piel
-  { id:"m34", name:"Piel Clara", result:"#e8c8a8", colors:["bt","qg"], note:"Base luminosa. Añade Pyrrol Red en mejillas.", section:"piel", tags:"piel clara retrato" },
+  { id:"m34", name:"Piel Clara", result:"#e8c8a8", colors:["bt","qdg"], note:"Base luminosa. Añade Pyrrol Red en mejillas.", section:"piel", tags:"piel clara retrato" },
   { id:"m35", name:"Piel Cálida", result:"#c8a078", colors:["rs","pr"], note:"Poquísimo rojo. Pieles mediterráneas.", section:"piel", tags:"piel cálida mediterránea" },
   { id:"m36", name:"Piel Rosada", result:"#d8b898", colors:["bt","po","cb"], note:"Toque mínimo de azul para neutralizar.", section:"piel", tags:"piel rosada" },
   { id:"m37", name:"Piel Oscura", result:"#886040", colors:["bsl","ub","pr"], note:"Varía proporciones según temperatura.", section:"piel", tags:"piel oscura" },
@@ -93,12 +93,12 @@ const MIXES = [
   { id:"a14", name:"Reflejo Vidrio", result:"#88a8c0", colors:["cer","rs"], note:"Ventanas reflejando cielo. Blancos para brillos.", section:"arquitectura", tags:"vidrio ventana reflejo cristal" },
   { id:"a15", name:"Ventana Oscura", result:"#384858", colors:["ind","bsl"], note:"Interior oscuro a través de cristal.", section:"arquitectura", tags:"ventana oscura interior" },
   { id:"a16", name:"Sombra Fría (muro)", result:"#585068", colors:["ub","mg"], note:"Sombra violácea en muros blancos. Moonglow granula.", section:"arquitectura", tags:"sombra fría muro blanco" },
-  { id:"a17", name:"Sombra Cálida (piedra)", result:"#685848", colors:["ub","bsl","qg"], note:"Sombra con rebote cálido. Fachadas de piedra y adobe.", section:"arquitectura", tags:"sombra cálida piedra adobe" },
+  { id:"a17", name:"Sombra Cálida (piedra)", result:"#685848", colors:["ub","bsl","qdg"], note:"Sombra con rebote cálido. Fachadas de piedra y adobe.", section:"arquitectura", tags:"sombra cálida piedra adobe" },
   { id:"a18", name:"Sombra Proyectada", result:"#484058", colors:["sv","ub"], note:"Sombras nítidas de cornisas, balcones y aleros.", section:"arquitectura", tags:"sombra proyectada cornisa balcón" },
   { id:"a19", name:"Sombra Profunda", result:"#282830", colors:["ind","sep"], note:"Bajo arcos, portones, pasajes. Una sola pasada valiente.", section:"arquitectura", tags:"sombra profunda arco portal" },
-  { id:"a20", name:"Árbol Urbano (luz)", result:"#506838", colors:["pgbs","qg"], note:"Copa iluminada. Pinta suelto, los árboles enmarcan.", section:"arquitectura", tags:"árbol urbano verde luz" },
+  { id:"a20", name:"Árbol Urbano (luz)", result:"#506838", colors:["pgbs","qdg"], note:"Copa iluminada. Pinta suelto, los árboles enmarcan.", section:"arquitectura", tags:"árbol urbano verde luz" },
   { id:"a21", name:"Árbol Urbano (sombra)", result:"#2a3818", colors:["pgbs","pr"], note:"Copa oscura. Casi negro con matiz verde.", section:"arquitectura", tags:"árbol urbano sombra oscuro" },
-  { id:"a22", name:"Enredadera / Hiedra", result:"#788048", colors:["ug","qg"], note:"Verde apagado sobre muros y balcones.", section:"arquitectura", tags:"enredadera hiedra balcón muro" },
+  { id:"a22", name:"Enredadera / Hiedra", result:"#788048", colors:["ug","qdg"], note:"Verde apagado sobre muros y balcones.", section:"arquitectura", tags:"enredadera hiedra balcón muro" },
   { id:"a23", name:"Acera", result:"#a09888", colors:["bt","jcg"], note:"Base neutra para aceras. Añade sombras después.", section:"arquitectura", tags:"acera pavimento suelo" },
   { id:"a24", name:"Adoquines", result:"#a09078", colors:["rs","jwg"], note:"Base cálida. Varía cada adoquín para textura.", section:"arquitectura", tags:"adoquín calle empedrado" },
   { id:"a25", name:"Asfalto Mojado", result:"#485060", colors:["pbgs","sep"], note:"Oscuro con reflejos. Blancos para charcos.", section:"arquitectura", tags:"asfalto mojado lluvia reflejo calle" },
@@ -119,7 +119,7 @@ const MIXES = [
   { id:"r9", name:"Oscuro P. Rubén", result:"#181820", colors:["ind","sep"], note:"Pablo Rubén: Indigo + Sepia = los oscuros más profundos. Ambos están en su set oficial DS. Para portones, sombras bajo arcos y zonas de máximo contraste.", section:"artistas", tags:"pablo rubén oscuro indigo sepia portal arco" },
   { id:"r10", name:"Verde P. Rubén", result:"#386838", colors:["pgbs","yo"], note:"Phthalo Green BS + Yellow Ochre: verde apagado natural que Pablo Rubén usa para vegetación en sus paisajes arquitectónicos sin competir con los edificios.", section:"artistas", tags:"pablo rubén verde vegetación arquitectura" },
   { id:"r11", name:"Piedra Cálida P. Rubén", result:"#a08060", colors:["tro","rs"], note:"Transparent Red Oxide + Raw Sienna: tonos cálidos de piedra mediterránea. Pablo Rubén pinta paisajes de Madrid, Florencia y Lisboa con estas tierras.", section:"artistas", tags:"pablo rubén piedra cálida mediterráneo fachada" },
-  { id:"r12", name:"Acento Rosa P. Rubén", result:"#e860a0", colors:["op","pr"], note:"Pablo Rubén incluye Opera Pink en su paleta DS para acentos florales y reflejos en fachadas. Opera Pink + Pyrrol Red = rosa-rojo vibrante para detalles.", section:"artistas", tags:"pablo rubén opera pink acento floral rosa" },
+  { id:"r12", name:"Acento Rosa P. Rubén", result:"#e860a0", colors:["qr","pr"], note:"Pablo Rubén incluye Quinacridone Rose en su paleta DS para acentos florales y reflejos en fachadas.", section:"artistas", tags:"pablo rubén rose acento floral" },
 
   // — Praful Sawant (paleta DS: New Gamboge, Pyrrol Orange, Ultramarine, Raw Sienna, Burnt Sienna Light, Undersea Green)
   { id:"r13", name:"Luz Dorada Sawant", result:"#d0a040", colors:["ng","rs"], note:"Praful Sawant: New Gamboge + Raw Sienna = luz dorada de India. Su paleta de solo 6 colores demuestra que menos es más. Perfecto para la hora dorada.", section:"artistas", tags:"sawant luz dorada india hora dorada new gamboge" },
@@ -166,15 +166,8 @@ const SECTIONS = [
   { id:"artistas", label:"10", title:"Recetas de Artistas", icon:"🎨" },
 ];
 
-const PALETTE_SLOTS = [
-  { row:0, col:0, id:"hym" }, { row:0, col:1, id:"isy" }, { row:0, col:2, id:"ng" }, { row:0, col:3, id:"yo" }, { row:0, col:4, id:"qg" }, { row:0, col:5, id:"rs" }, { row:0, col:6, id:"bt" },
-  { row:1, col:0, id:"po" }, { row:1, col:1, id:"pr" }, { row:1, col:2, id:"op" }, { row:1, col:3, id:"tro" }, { row:1, col:4, id:"bsl" }, { row:1, col:5, id:"sep" },
-  { row:2, col:0, id:"ub" }, { row:2, col:1, id:"pbgs" }, { row:2, col:2, id:"cb" }, { row:2, col:3, id:"cer" }, { row:2, col:4, id:"ct" }, { row:2, col:5, id:"ind" },
-  { row:3, col:0, id:"pgbs" }, { row:3, col:1, id:"ug" }, { row:3, col:2, id:"lav" }, { row:3, col:3, id:"sv" }, { row:3, col:4, id:"mg" },
-  { row:4, col:0, id:"jcg" }, { row:4, col:1, id:"jwg" }, { row:4, col:2, id:"lb" },
-];
-
-const ROW_LABELS = ["Amarillos & Tierras","Rojos & Naranjas","Azules","Verdes & Violetas","Neutros"];
+const PALETTE_LEFT = ["pr", "hym", "isy", "po", "qr", "bt", "rs", "yo", "qdg", "bsl", "tro", "sep", "jwg"];
+const PALETTE_RIGHT = ["pgbs", "ug", "ct", "lav", "cer", "ub", "cb", "pbgs", "ind", "jcg", "mg", "sv", "lb"];
 
 const colorMap = {};
 COLORS.forEach(c => colorMap[c.id] = c);
@@ -203,26 +196,26 @@ export default function App() {
   const COLOR_REL = {
     hym: { hue:55, comp:["sv","mg","lav"], analogous:["isy","ng"], triadic:["pr","pbgs"], split:["ub","pgbs"], neutral:"sv", desc:"Amarillo primario medio. Ni cálido ni frío." },
     isy: { hue:48, comp:["sv","mg","lav"], analogous:["hym","ng"], triadic:["pr","cb"], split:["ub","pgbs"], neutral:"sv", desc:"Amarillo cálido profundo, casi naranja a masstone. Transparente." },
-    ng: { hue:38, comp:["ub","cb"], analogous:["isy","po"], triadic:["op","pgbs"], split:["pbgs","lav"], neutral:"ub", desc:"Amarillo cálido anaranjado. Intenso y versátil." },
+    ng: { hue:38, comp:["ub","cb"], analogous:["isy","po"], triadic:["qr","pgbs"], split:["pbgs","lav"], neutral:"ub", desc:"Amarillo cálido anaranjado. Intenso y versátil." },
     yo: { hue:42, comp:["ub","cb"], analogous:["rs","ng"], triadic:["pr","pgbs"], split:["pbgs","sv"], neutral:"ub", desc:"Amarillo tierra, semi-opaco. Granulación suave." },
-    qg: { hue:35, comp:["ub","sv"], analogous:["yo","tro"], triadic:["pr","cer"], split:["pbgs","lav"], neutral:"ub", desc:"Amarillo neutralizado cálido. Clave para verdes realistas." },
-    rs: { hue:40, comp:["ub","cb"], analogous:["yo","qg"], triadic:["pr","pgbs"], split:["pbgs","sv"], neutral:"cb", desc:"Tierra amarilla cálida. Granulante." },
+    qdg: { hue:35, comp:["ub","sv"], analogous:["yo","tro"], triadic:["pr","cer"], split:["pbgs","lav"], neutral:"ub", desc:"Amarillo neutralizado cálido profundo. Muy granulante." },
+    rs: { hue:40, comp:["ub","cb"], analogous:["yo","qdg"], triadic:["pr","pgbs"], split:["pbgs","sv"], neutral:"cb", desc:"Tierra amarilla cálida. Granulante." },
     bt: { hue:45, comp:[], analogous:[], triadic:[], split:[], neutral:"", desc:"Crema opaco granulante. No es un color de mezcla primaria sino un modificador." },
     po: { hue:22, comp:["pbgs","ct"], analogous:["pr","ng"], triadic:["pgbs","lav"], split:["ub","pgbs"], neutral:"pbgs", desc:"Naranja puro intenso. Complementario del azul." },
-    pr: { hue:8, comp:["pgbs","ct"], analogous:["po","op"], triadic:["hym","ub"], split:["pbgs","cb"], neutral:"pgbs", desc:"Rojo cálido. Su complementario es Phthalo Green." },
-    op: { hue:340, comp:["pgbs","ug"], analogous:["pr","lav"], triadic:["ng","cer"], split:["pgbs","ct"], neutral:"pgbs", desc:"Rosa fluorescente. ⚠️ No permanente. Mezcla vibrante pero efímera." },
+    pr: { hue:8, comp:["pgbs","ct"], analogous:["po","qr"], triadic:["hym","ub"], split:["pbgs","cb"], neutral:"pgbs", desc:"Rojo cálido. Su complementario es Phthalo Green." },
+    qr: { hue:345, comp:["pgbs","ug"], analogous:["pr","lav"], triadic:["ng","cer"], split:["pgbs","ct"], neutral:"pgbs", desc:"Rosa-rojo frío y vibrante. Permanente." },
     tro: { hue:18, comp:["pbgs","ub"], analogous:["bsl","pr"], triadic:["hym","pgbs"], split:["ub","pgbs"], neutral:"ub", desc:"Rojo tierra transparente. Granulación espectacular." },
     bsl: { hue:25, comp:["ub","pbgs"], analogous:["tro","yo"], triadic:["hym","pgbs"], split:["ub","cb"], neutral:"ub", desc:"Naranja tierra. Su par con Ultramarine = el gris más famoso." },
     sep: { hue:28, comp:["ub","pbgs"], analogous:["bsl","tro"], triadic:["yo","pgbs"], split:["ub","cb"], neutral:"ub", desc:"Marrón oscuro opaco. Útil para oscuros directos." },
-    ub: { hue:240, comp:["ng","yo","bsl"], analogous:["pbgs","cb"], triadic:["pr","hym"], split:["po","qg"], neutral:"bsl", desc:"Azul cálido violáceo. El azul más versátil. Granulante." },
-    pbgs: { hue:210, comp:["po","pr","tro"], analogous:["ub","cer"], triadic:["op","ng"], split:["pr","ng"], neutral:"pr", desc:"Azul frío verdoso. Potentísimo y staining." },
-    cb: { hue:225, comp:["po","ng"], analogous:["ub","cer"], triadic:["pr","hym"], split:["po","qg"], neutral:"bsl", desc:"Azul medio puro. Granulante y levantable." },
-    cer: { hue:200, comp:["po","tro"], analogous:["cb","ct"], triadic:["ng","op"], split:["pr","qg"], neutral:"bsl", desc:"Azul cielo opaco. Granulante y levantable. Ideal para cielos." },
-    ct: { hue:185, comp:["pr","po"], analogous:["cer","pgbs"], triadic:["ng","lav"], split:["pr","op"], neutral:"pr", desc:"Turquesa opaco granulante. Aguas tropicales." },
-    ind: { hue:225, comp:["po","ng"], analogous:["ub","pbgs"], triadic:["pr","hym"], split:["po","qg"], neutral:"bsl", desc:"Azul oscuro profundo. Mezcla de conveniencia." },
-    pgbs: { hue:165, comp:["pr","op"], analogous:["ct","ug"], triadic:["ub","po"], split:["pr","tro"], neutral:"pr", desc:"Verde azulado potentísimo. Con rojos da negros." },
-    ug: { hue:155, comp:["pr","op"], analogous:["pgbs","ct"], triadic:["ub","po"], split:["pr","tro"], neutral:"op", desc:"Verde apagado (Ultram.+Quin Gold). Mezcla de conveniencia." },
-    lav: { hue:275, comp:["yo","qg"], analogous:["sv","mg"], triadic:["ng","pgbs"], split:["yo","ng"], neutral:"qg", desc:"Violeta claro opaco granulante. Mezcla de conveniencia." },
+    ub: { hue:240, comp:["ng","yo","bsl"], analogous:["pbgs","cb"], triadic:["pr","hym"], split:["po","qdg"], neutral:"bsl", desc:"Azul cálido violáceo. El azul más versátil. Granulante." },
+    pbgs: { hue:210, comp:["po","pr","tro"], analogous:["ub","cer"], triadic:["qr","ng"], split:["pr","ng"], neutral:"pr", desc:"Azul frío verdoso. Potentísimo y staining." },
+    cb: { hue:225, comp:["po","ng"], analogous:["ub","cer"], triadic:["pr","hym"], split:["po","qdg"], neutral:"bsl", desc:"Azul medio puro. Granulante y levantable." },
+    cer: { hue:200, comp:["po","tro"], analogous:["cb","ct"], triadic:["ng","qr"], split:["pr","qdg"], neutral:"bsl", desc:"Azul cielo opaco. Granulante y levantable. Ideal para cielos." },
+    ct: { hue:185, comp:["pr","po"], analogous:["cer","pgbs"], triadic:["ng","lav"], split:["pr","qr"], neutral:"pr", desc:"Turquesa opaco granulante. Aguas tropicales." },
+    ind: { hue:225, comp:["po","ng"], analogous:["ub","pbgs"], triadic:["pr","hym"], split:["po","qdg"], neutral:"bsl", desc:"Azul oscuro profundo. Mezcla de conveniencia." },
+    pgbs: { hue:165, comp:["pr","qr"], analogous:["ct","ug"], triadic:["ub","po"], split:["pr","tro"], neutral:"pr", desc:"Verde azulado potentísimo. Con rojos da negros." },
+    ug: { hue:155, comp:["pr","qr"], analogous:["pgbs","ct"], triadic:["ub","po"], split:["pr","tro"], neutral:"qr", desc:"Verde apagado (Ultram.+Quin Gold). Mezcla de conveniencia." },
+    lav: { hue:275, comp:["yo","qdg"], analogous:["sv","mg"], triadic:["ng","pgbs"], split:["yo","ng"], neutral:"qdg", desc:"Violeta claro opaco granulante. Mezcla de conveniencia." },
     sv: { hue:280, comp:["hym","isy"], analogous:["lav","mg"], triadic:["ng","pgbs"], split:["yo","ng"], neutral:"hym", desc:"Violeta sombra. Granula y separa pigmentos al secar." },
     mg: { hue:270, comp:["hym","isy"], analogous:["sv","lav"], triadic:["ng","pgbs"], split:["yo","ng"], neutral:"hym", desc:"Violeta misterioso. Granula y separa en 3 colores al secar." },
     jcg: { hue:0, comp:[], analogous:[], triadic:[], split:[], neutral:"", desc:"Gris neutro frío. Mezcla signature de Joseph Zbukvic." },
@@ -509,49 +502,62 @@ export default function App() {
               Distribución visual de tu paleta. Toca un color para ver sus mezclas en el mezclador.
             </p>
             {/* Palette box */}
-            <div className="mobile-p-20" style={{ background:"#1a1a1f", border:"1px solid rgba(255,255,255,0.08)", borderRadius:20, padding:28, maxWidth:600, margin:"0 auto" }}>
+            <div className="mobile-p-20" style={{ background:"#1a1a1f", border:"1px solid rgba(255,255,255,0.08)", borderRadius:20, padding:28, maxWidth:700, margin:"0 auto" }}>
               {/* Mixing area */}
-              <div style={{ background:"#22222a", borderRadius:12, height:64, marginBottom:24, display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid rgba(255,255,255,0.04)" }}>
+              <div style={{ background:"#22222a", borderRadius:12, height:64, marginBottom:32, display:"flex", alignItems:"center", justifyContent:"center", border:"1px solid rgba(255,255,255,0.04)" }}>
                 <span style={{ fontSize:"0.72rem", color:"#5a554d", fontWeight:500, letterSpacing:1, textTransform:"uppercase" }}>Zona de mezclas</span>
               </div>
-              {/* Wells */}
-              {[0,1,2,3,4].map(row => {
-                const slots = PALETTE_SLOTS.filter(s => s.row === row);
-                return (
-                  <div key={row} style={{ marginBottom: row<4 ? 8 : 0 }}>
-                    <div style={{ fontSize:"0.58rem", color:"#5a554d", fontWeight:600, letterSpacing:1.5, textTransform:"uppercase", marginBottom:6, paddingLeft:4 }}>
-                      {ROW_LABELS[row]}
-                    </div>
-                    <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
-                      {slots.map(slot => {
-                        const c = getColorById(slot.id);
-                        return (
-                          <button key={slot.id} onClick={()=>{ setTab("mixer"); setMixerSel([slot.id]); }}
-                            className="mobile-well"
-                            title={c.name}
-                            style={{
-                              width:56, height:56, borderRadius:10, background:c.hex, border:"2px solid rgba(255,255,255,0.06)",
-                              cursor:"pointer", position:"relative", transition:"all 0.2s", boxShadow:"0 2px 8px rgba(0,0,0,0.3)",
-                              display:"flex", alignItems:"flex-end", justifyContent:"center", padding:3,
-                            }}
-                            onMouseEnter={e=>{ e.currentTarget.style.transform="translateY(-3px)"; e.currentTarget.style.boxShadow="0 6px 20px rgba(0,0,0,0.5)"; }}
-                            onMouseLeave={e=>{ e.currentTarget.style.transform=""; e.currentTarget.style.boxShadow="0 2px 8px rgba(0,0,0,0.3)"; }}
-                          >
-                            <span style={{
-                              fontSize:"0.48rem", fontWeight:700, color: ["#f5e24d","#e8c82a","#e8a517","#c9982a","#c4892a","#c89848","#e8dcc0","#e85c1a","#ff3ca0","#e87820","#68c8c8","#a8c8e0","#5898c0","#9878b0","#8a8880","#988878","#b8a060"].includes(c.hex) ? "rgba(0,0,0,0.6)" : "rgba(255,255,255,0.7)",
-                              textAlign:"center", lineHeight:1.1, textShadow: ["#f5e24d","#e8c82a","#e8dcc0","#ff3ca0"].includes(c.hex) ? "none" : "0 1px 2px rgba(0,0,0,0.5)"
-                            }}>
-                              {c.name.split(" ").slice(0,2).join(" ")}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
+              
+              <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:24 }}>
+                {/* Left Column */}
+                <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                  <div style={{ fontSize:"0.58rem", color:"#5a554d", fontWeight:600, letterSpacing:1.5, textTransform:"uppercase", marginBottom:4 }}>Columna Izquierda</div>
+                  {PALETTE_LEFT.map(id => {
+                    const c = getColorById(id);
+                    if (!c) return null;
+                    return (
+                      <button key={id} onClick={()=>{ setTab("mixer"); setMixerSel([id]); }}
+                        title={c.name}
+                        style={{
+                          display:"flex", alignItems:"center", gap:12, padding:8, borderRadius:10,
+                          background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)",
+                          cursor:"pointer", transition:"all 0.2s", textAlign:"left"
+                        }}
+                        onMouseEnter={e=>{ e.currentTarget.style.background="rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor="rgba(212,132,90,0.3)"; }}
+                        onMouseLeave={e=>{ e.currentTarget.style.background="rgba(255,255,255,0.02)"; e.currentTarget.style.borderColor="rgba(255,255,255,0.05)"; }}
+                      >
+                        <div style={{ width:32, height:32, borderRadius:6, background:c.hex, flexShrink:0, boxShadow:"0 2px 6px rgba(0,0,0,0.3)", border: c.hex==="#282828"?"1px solid rgba(255,255,255,0.15)":"none" }} />
+                        <span style={{ fontSize:"0.75rem", color:"#e8e4df", fontWeight:500 }}>{c.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {/* Right Column */}
+                <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                  <div style={{ fontSize:"0.58rem", color:"#5a554d", fontWeight:600, letterSpacing:1.5, textTransform:"uppercase", marginBottom:4 }}>Columna Derecha</div>
+                  {PALETTE_RIGHT.map(id => {
+                    const c = getColorById(id);
+                    if (!c) return null;
+                    return (
+                      <button key={id} onClick={()=>{ setTab("mixer"); setMixerSel([id]); }}
+                        title={c.name}
+                        style={{
+                          display:"flex", alignItems:"center", gap:12, padding:8, borderRadius:10,
+                          background:"rgba(255,255,255,0.02)", border:"1px solid rgba(255,255,255,0.05)",
+                          cursor:"pointer", transition:"all 0.2s", textAlign:"left"
+                        }}
+                        onMouseEnter={e=>{ e.currentTarget.style.background="rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor="rgba(212,132,90,0.3)"; }}
+                        onMouseLeave={e=>{ e.currentTarget.style.background="rgba(255,255,255,0.02)"; e.currentTarget.style.borderColor="rgba(255,255,255,0.05)"; }}
+                      >
+                        <div style={{ width:32, height:32, borderRadius:6, background:c.hex, flexShrink:0, boxShadow:"0 2px 6px rgba(0,0,0,0.3)", border: c.hex==="#282828"?"1px solid rgba(255,255,255,0.15)":"none" }} />
+                        <span style={{ fontSize:"0.75rem", color:"#e8e4df", fontWeight:500 }}>{c.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
-            <p style={{ textAlign:"center", fontSize:"0.72rem", color:"#5a554d", marginTop:12, fontWeight:300 }}>
+            <p style={{ textAlign:"center", fontSize:"0.72rem", color:"#5a554d", marginTop:24, fontWeight:300 }}>
               Toca cualquier color para saltar al mezclador con ese color seleccionado
             </p>
           </div>
